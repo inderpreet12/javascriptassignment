@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3</title>
+	<script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+	<style>
+	svg{
+		margin-left: 100px;
+	}
+	</style>
+</head>
+<body>
+<center><h2>Age-wise population distribution in terms of literate population</h2></center>
+<script type="text/javascript">
+	
+d3.json("firstjson.json",function(data)
+{
+var widthscale=d3.scale.linear()
+                .domain([0,114128000])
+                .range([0,1000]);
+
+
+    var axis=d3.svg.axis()
+               .ticks(4)
+              .scale(widthscale);
+              // .domain([0,60])
+              //  .range([0,700])
+
+
+var canvas=d3.select("body")
+             .append("svg")
+             .call(axis)
+             .attr("transform","translate(30,40)")
+             .attr("width",1000)
+             .attr("height",1000);
+             // .attr("transform","translate(-90)");
+//var rotate = d3.svg.transform().rotate(0,200,200);
+             canvas.selectAll("rect")
+                   .data(data)
+
+                   .enter()
+                   .append("rect")
+                   .attr("width",function(d){return widthscale(d.Literate_Persons); })
+                   .attr("height",26)
+                   .attr("y",function(d,i){return i*30})
+         
+                  // .text(function(d){return (d.Age_group);})
+                   .attr("fill","blue");
+	
+
+              canvas.selectAll("text")
+              .data(data)
+              .enter()
+              .append("text")
+              .attr("fill","black")
+              .attr("y",function(d,i) {return i*30+18; })
+              
+              .text(function (d){ return d.Age_group; })
+
+});
+
+
+
+</script>
+
+</body>
+</html>
